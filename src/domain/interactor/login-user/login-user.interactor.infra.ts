@@ -20,6 +20,6 @@ export class LoginUserInteractorInfra {
 
   generateJsonWebToken(userId: string): string {
     const payload = new JwtPayload(userId);
-    return this.jwtService.sign(payload);
+    return this.jwtService.sign({ ...payload });
   }
 }
