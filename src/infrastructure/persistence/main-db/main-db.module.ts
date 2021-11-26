@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RegisterUserMainDb } from './typeorm/command/register-user.main-db';
 import { IsUsernameUniqueMainDb } from './typeorm/query/is-username-unique.main-db';
+import { PostSchema } from './typeorm/schemas/post.schema';
 import { UserSchema } from './typeorm/schemas/user.schema';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserSchema]),
+    TypeOrmModule.forFeature([UserSchema, PostSchema]),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'facebluuk.sqlite',

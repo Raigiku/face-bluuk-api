@@ -1,9 +1,11 @@
 import { EntitySchema } from 'typeorm';
+import { Post } from './post.schema';
 
-class User {
-  id!: string;
-  username!: string;
-  hashedPassword!: string;
+export interface User {
+  id: string;
+  username: string;
+  hashedPassword: string;
+  posts: Post[];
 }
 
 export const UserSchema = new EntitySchema<User>({
@@ -24,6 +26,12 @@ export const UserSchema = new EntitySchema<User>({
     hashedPassword: {
       type: String,
       nullable: false,
+    },
+  },
+  relations: {
+    posts: {
+      type: 'one-to-many',
+      target: 'Post',
     },
   },
 });
