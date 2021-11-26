@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from 'src/domain/value-object/jwt-payload';
 import { Connection } from 'typeorm';
 
 @Injectable()
@@ -18,7 +19,7 @@ export class LoginUserInteractorInfra {
   }
 
   generateJsonWebToken(userId: string): string {
-    const payload = { userId };
+    const payload = new JwtPayload(userId);
     return this.jwtService.sign(payload);
   }
 }
