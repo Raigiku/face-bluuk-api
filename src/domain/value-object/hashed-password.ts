@@ -6,4 +6,8 @@ export class HashedPassword {
   static new(password: string): string {
     return bcrypt.hashSync(password, this.saltRounds);
   }
+
+  static compare(password: string, hash: string): boolean {
+    return bcrypt.compareSync(password, hash);
+  }
 }

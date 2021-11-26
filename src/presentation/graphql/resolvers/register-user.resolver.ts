@@ -12,12 +12,12 @@ export class RegisterUserInput {
 
 @Resolver()
 export class RegisterUserResolver {
-  constructor(private registerUserInteractor: RegisterUserInteractor) {}
+  constructor(private interactor: RegisterUserInteractor) {}
 
   @Mutation(() => Boolean, { nullable: true })
   async registerUser(@Args('input') req: RegisterUserInput): Promise<boolean> {
     const input = RegisterUserInteractorInput.parse(req.username, req.password);
-    await this.registerUserInteractor.execute(input);
+    await this.interactor.execute(input);
     return true;
   }
 }
