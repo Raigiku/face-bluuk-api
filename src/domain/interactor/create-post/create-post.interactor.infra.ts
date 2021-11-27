@@ -18,7 +18,8 @@ export class CreatePostInteractorInfra {
     text: string,
     likes: number,
     userId: string,
+    creationDate: Date,
   ): Promise<void> {
-    await this.mainDbInsertPost.execute(id, text, likes, userId);
+    await this.mainDbInsertPost.execute(id, text, likes, userId, creationDate);
   }
 }

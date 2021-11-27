@@ -21,6 +21,7 @@ export class CreatePostInteractor {
       input.text,
       0,
       input.userId,
+      new Date(),
     );
   }
 }

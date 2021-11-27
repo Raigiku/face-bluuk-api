@@ -5,6 +5,7 @@ export interface Post {
   id: string;
   text: string;
   likes: number;
+  creationDate: Date;
   creator: User;
   userLikes: User[];
 }
@@ -26,6 +27,10 @@ export const PostSchema = new EntitySchema<Post>({
     likes: {
       type: 'bigint',
       nullable: false,
+    },
+    creationDate: {
+      type: 'datetime',
+      nullable: true,
     },
   },
   relations: {

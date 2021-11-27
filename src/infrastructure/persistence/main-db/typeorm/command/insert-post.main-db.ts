@@ -12,11 +12,13 @@ export class InserPostMainDb {
     text: string,
     likes: number,
     userId: string,
+    creationDate: Date,
   ): Promise<InsertResult> {
     return manager.insert(PostSchema, {
       id,
       text,
       likes,
+      creationDate: creationDate,
       creator: { id: userId },
     });
   }
@@ -26,9 +28,10 @@ export class InserPostMainDb {
     text: string,
     likes: number,
     userId: string,
+    creationDate: Date,
   ): Promise<void> {
     await this.connection.transaction('SERIALIZABLE', async (manager) => {
-      await this.insertIntoPost(manager, id, text, likes, userId);
+      await this.insertIntoPost(manager, id, text, likes, userId, creationDate);
     });
   }
 }
