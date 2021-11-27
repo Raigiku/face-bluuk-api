@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, EntityManager, InsertResult } from 'typeorm';
+import { Connection, EntityManager } from 'typeorm';
 import { PostSchema } from '../schemas/post.schema';
 
 @Injectable()
-export class InserPostMainDb {
+export class CreatePostMainDb {
   constructor(private connection: Connection) {}
 
-  insertIntoPost(
+  async execute(
     manager: EntityManager,
     id: string,
     text: string,
     likes: number,
     userId: string,
     creationDate: Date,
-  ): Promise<InsertResult> {
-    return manager.insert(PostSchema, {
+  ): Promise<void> {
+    await manager.insert(PostSchema, {
       id,
       text,
       likes,
@@ -23,7 +23,7 @@ export class InserPostMainDb {
     });
   }
 
-  async execute(
+  async executeTransaction(
     id: string,
     text: string,
     likes: number,
@@ -31,7 +31,7 @@ export class InserPostMainDb {
     creationDate: Date,
   ): Promise<void> {
     await this.connection.transaction('SERIALIZABLE', async (manager) => {
-      await this.insertIntoPost(manager, id, text, likes, userId, creationDate);
+      await this.execute(manager, id, text, likes, userId, creationDate);
     });
   }
 }

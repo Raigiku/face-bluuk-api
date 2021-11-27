@@ -16,7 +16,7 @@ export class CreatePostInteractor {
 
     if (errors.hasErrors) throw new BadRequestException(errors);
 
-    await this.infrastructure.insertPostInMainDb(
+    await this.infrastructure.createPostInMainDb(
       Uuid.new(),
       input.text,
       0,

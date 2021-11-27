@@ -1,16 +1,16 @@
 import { EntitySchema } from 'typeorm';
-import { User } from './user.schema';
+import { UserTable } from './user.schema';
 
-export interface Post {
+export interface PostTable {
   id: string;
   text: string;
   likes: number;
   creationDate: Date;
-  creator: User;
-  userLikes: User[];
+  creator: UserTable;
+  userLikes: UserTable[];
 }
 
-export const PostSchema = new EntitySchema<Post>({
+export const PostSchema = new EntitySchema<PostTable>({
   name: 'post',
   tableName: 'post',
   columns: {
