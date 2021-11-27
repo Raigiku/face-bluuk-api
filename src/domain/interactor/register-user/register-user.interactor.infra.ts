@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterUserMainDb } from 'src/infrastructure/persistence/main-db/typeorm/command/register-user.main-db';
+import { InsertUserMainDb } from 'src/infrastructure/persistence/main-db/typeorm/command/insert-user.main-db';
 import { IsUsernameUniqueMainDb } from 'src/infrastructure/persistence/main-db/typeorm/query/is-username-unique.main-db';
 
 @Injectable()
 export class RegisterUserInteractorInfra {
   constructor(
-    private mainDbRegisterUser: RegisterUserMainDb,
+    private mainDbRegisterUser: InsertUserMainDb,
     private mainDbIsUsernameUnique: IsUsernameUniqueMainDb,
   ) {}
 
@@ -13,7 +13,7 @@ export class RegisterUserInteractorInfra {
     return await this.mainDbIsUsernameUnique.execute(username);
   }
 
-  async registerUserInMainDb(
+  async insertUserInMainDb(
     id: string,
     username: string,
     hashedPassword: string,

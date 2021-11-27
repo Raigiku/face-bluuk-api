@@ -19,7 +19,7 @@ export class RegisterUserInteractor {
 
     if (errors.hasErrors) throw new BadRequestException(errors);
 
-    await this.infrastructure.registerUserInMainDb(
+    await this.infrastructure.insertUserInMainDb(
       Uuid.new(),
       input.username,
       HashedPassword.new(input.password),

@@ -15,6 +15,6 @@ export class LoginUserInteractorInput {
     if (parsedUsername === null || parsedPassword === null)
       throw new BadRequestException(errors);
 
-    return new LoginUserInteractorInput(username, password);
+    return new LoginUserInteractorInput(parsedUsername, parsedPassword);
   }
 }

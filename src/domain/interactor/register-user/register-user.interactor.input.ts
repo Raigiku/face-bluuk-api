@@ -18,6 +18,6 @@ export class RegisterUserInteractorInput {
     if (parsedPassword === null || parsedUsername === null)
       throw new BadRequestException(errors);
 
-    return new RegisterUserInteractorInput(username, password);
+    return new RegisterUserInteractorInput(parsedUsername, parsedPassword);
   }
 }

@@ -3,7 +3,7 @@ import { Connection, EntityManager, InsertResult } from 'typeorm';
 import { UserSchema } from '../schemas/user.schema';
 
 @Injectable()
-export class RegisterUserMainDb {
+export class InsertUserMainDb {
   constructor(private connection: Connection) {}
 
   insertIntoUser(

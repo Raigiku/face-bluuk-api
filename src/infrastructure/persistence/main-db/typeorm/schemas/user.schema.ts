@@ -5,11 +5,12 @@ export interface User {
   id: string;
   username: string;
   hashedPassword: string;
-  posts: Post[];
+  createdPosts: Post[];
+  postsLiked: Post[];
 }
 
 export const UserSchema = new EntitySchema<User>({
-  name: 'User',
+  name: 'user',
   tableName: 'user',
   columns: {
     id: {
@@ -29,9 +30,16 @@ export const UserSchema = new EntitySchema<User>({
     },
   },
   relations: {
-    posts: {
+    createdPosts: {
       type: 'one-to-many',
-      target: 'Post',
+      target: 'post',
+      inverseSide: 'creator',
+    },
+    postsLiked: {
+      type: 'many-to-many',
+      target: 'post',
+      inverseSide: 'userLikes',
+      joinTable: true,
     },
   },
 });

@@ -4,11 +4,13 @@ import { User } from './user.schema';
 export interface Post {
   id: string;
   text: string;
-  user: User;
+  likes: number;
+  creator: User;
+  userLikes: User[];
 }
 
 export const PostSchema = new EntitySchema<Post>({
-  name: 'Post',
+  name: 'post',
   tableName: 'post',
   columns: {
     id: {
@@ -21,11 +23,21 @@ export const PostSchema = new EntitySchema<Post>({
       length: 500,
       nullable: false,
     },
+    likes: {
+      type: 'bigint',
+      nullable: false,
+    },
   },
   relations: {
-    user: {
+    creator: {
       type: 'many-to-one',
-      target: 'User',
+      target: 'user',
+      inverseSide: 'createdPosts',
+    },
+    userLikes: {
+      type: 'many-to-many',
+      target: 'user',
+      inverseSide: 'postsLiked',
     },
   },
 });
