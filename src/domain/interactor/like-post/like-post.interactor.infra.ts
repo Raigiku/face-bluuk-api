@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LikePostMainDb } from 'src/infrastructure/persistence/main-db/typeorm/command/like-post.main-db';
 import { DoesIdExistMainDb } from 'src/infrastructure/persistence/main-db/typeorm/query/does-id-exist.main-db';
-import { HasUserLikedPostMainDb } from 'src/infrastructure/persistence/main-db/typeorm/query/has-user-likes-post.main-db';
+import { HasUserLikedPostMainDb } from 'src/infrastructure/persistence/main-db/typeorm/query/has-user-liked-post.main-db';
 
 @Injectable()
 export class LikePostInteractorInfra {

@@ -1,11 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { CreatePostResolver } from './graphql/resolvers/create-post.resolver';
-import { LikePostResolver } from './graphql/resolvers/like-post.resolver';
-import { LoginUserResolver } from './graphql/resolvers/login-user.resolver';
-import { RegisterUserResolver } from './graphql/resolvers/register-user.resolver';
-import { RootQuery } from './graphql/resolvers/root-query.resolver';
-import { UnlikePostResolver } from './graphql/resolvers/unlike-post.resolver';
+import { PostResolver } from './graphql/post/post.resolver';
+import { UserResolver } from './graphql/user/user.resolver';
 
 @Global()
 @Module({
@@ -14,13 +10,6 @@ import { UnlikePostResolver } from './graphql/resolvers/unlike-post.resolver';
       autoSchemaFile: true,
     }),
   ],
-  providers: [
-    RootQuery,
-    RegisterUserResolver,
-    LoginUserResolver,
-    CreatePostResolver,
-    LikePostResolver,
-    UnlikePostResolver,
-  ],
+  providers: [UserResolver, PostResolver],
 })
 export class PresentationModule {}
