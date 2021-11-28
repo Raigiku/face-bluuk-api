@@ -2,8 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PostResolver } from './graphql/post/post.resolver';
 import { UserResolver } from './graphql/user/user.resolver';
-import * as jwtP from 'jsonwebtoken';
-import { authConstants } from 'src/infrastructure/auth/auth-constants';
+import * as jwtL from 'jsonwebtoken';
 
 @Global()
 @Module({
@@ -14,14 +13,15 @@ import { authConstants } from 'src/infrastructure/auth/auth-constants';
       subscriptions: {
         'subscriptions-transport-ws': {
           onConnect: (connectionParams: any) => {
-            const jwt = connectionParams.Authorization.split(' ')[1];
-            const jwtPayload = jwtP.verify(jwt, authConstants.jwtSecret);
-            return { user: jwtPayload };
+            const jwtPayload = jwtL.decode(connectionParams.authorization);
+            return {
+              req: {
+                user: jwtPayload,
+                headers: connectionParams,
+              },
+            };
           },
         },
-      },
-      context: ({ connection }) => {
-        if (connection?.context != null) console.dir(connection.context);
       },
     }),
   ],

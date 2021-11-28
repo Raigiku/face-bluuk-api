@@ -7,7 +7,7 @@ export const authConstants = {
 
 export const CurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req.user;
+    const ctx = GqlExecutionContext.create(context).getContext();
+    return ctx.req.user;
   },
 );

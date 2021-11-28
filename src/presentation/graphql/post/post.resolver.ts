@@ -62,7 +62,7 @@ export class PostResolver {
     return true;
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Subscription(() => PostLikedResponseDto, {
     filter: (payload: PostLiked, variables: { arg: PostLikedArgDto }) => {
       return payload.postLiked.postId === variables.arg.postId;
@@ -70,7 +70,7 @@ export class PostResolver {
   })
   postLiked(
     @Args('arg') arg: PostLikedArgDto,
-    // @CurrentUser() jwtPayload: JwtPayload,
+    @CurrentUser() jwtPayload: JwtPayload,
   ): AsyncIterator<PostLikedResponseDto> {
     return this.pubSub.asyncIterator(PostLiked.eventName);
   }
