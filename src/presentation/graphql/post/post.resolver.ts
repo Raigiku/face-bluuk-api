@@ -1,11 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { CreatePostInteractor } from 'src/domain/interactor/create-post/create-post.interactor';
-import { CreatePostInteractorInput } from 'src/domain/interactor/create-post/create-post.interactor.input';
-import { LikePostInteractor } from 'src/domain/interactor/like-post/like-post.interactor';
-import { LikePostInteractorInput } from 'src/domain/interactor/like-post/like-post.interactor.input';
-import { UnlikePostInteractor } from 'src/domain/interactor/unlike-post/unlike-post.interactor';
-import { UnlikePostInteractorInput } from 'src/domain/interactor/unlike-post/unlike-post.interactor.input';
+import { CreatePostInteractor } from 'src/domain/interactor/post/create-post/create-post.interactor';
+import { CreatePostInteractorInput } from 'src/domain/interactor/post/create-post/create-post.interactor.input';
+import { LikePostInteractor } from 'src/domain/interactor/post/like-post/like-post.interactor';
+import { LikePostInteractorInput } from 'src/domain/interactor/post/like-post/like-post.interactor.input';
+import { UnlikePostInteractor } from 'src/domain/interactor/post/unlike-post/unlike-post.interactor';
+import { UnlikePostInteractorInput } from 'src/domain/interactor/post/unlike-post/unlike-post.interactor.input';
 import { JwtPayload } from 'src/domain/value-object/jwt-payload';
 import { CurrentUser } from 'src/infrastructure/auth/auth-constants';
 import { JwtAuthGuard } from 'src/infrastructure/auth/jwt-auth.guard';
