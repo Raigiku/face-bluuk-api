@@ -1,17 +1,21 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { CreatePostInteractor } from 'src/domain/interactor/post/create-post/create-post.interactor';
-import { CreatePostInteractorInput } from 'src/domain/interactor/post/create-post/create-post.interactor.input';
-import { LikePostInteractor } from 'src/domain/interactor/post/like-post/like-post.interactor';
-import { LikePostInteractorInput } from 'src/domain/interactor/post/like-post/like-post.interactor.input';
-import { UnlikePostInteractor } from 'src/domain/interactor/post/unlike-post/unlike-post.interactor';
-import { UnlikePostInteractorInput } from 'src/domain/interactor/post/unlike-post/unlike-post.interactor.input';
-import { JwtPayload } from 'src/domain/value-object/jwt-payload';
+import { UseGuards, Request } from '@nestjs/common';
+import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
+import { CreatePostInteractor } from 'src/domain/post/interactor/create-post/create-post.interactor';
+import { CreatePostInteractorInput } from 'src/domain/post/interactor/create-post/create-post.interactor.input';
+import { LikePostInteractor } from 'src/domain/post/interactor/like-post/like-post.interactor';
+import { LikePostInteractorInput } from 'src/domain/post/interactor/like-post/like-post.interactor.input';
+import { UnlikePostInteractor } from 'src/domain/post/interactor/unlike-post/unlike-post.interactor';
+import { UnlikePostInteractorInput } from 'src/domain/post/interactor/unlike-post/unlike-post.interactor.input';
+import { JwtPayload } from 'src/domain/core/value-object/jwt-payload';
 import { CurrentUser } from 'src/infrastructure/auth/auth-constants';
 import { JwtAuthGuard } from 'src/infrastructure/auth/jwt-auth.guard';
-import { CreatePostDto } from './dto/create-post.dto';
-import { LikePostDto } from './dto/like-post.dto';
-import { UnlikePostDto } from './dto/unlike-post.dto';
+import { CreatePostArgDto } from './dto/arg/create-post.arg.dto';
+import { UnlikePostArgDto } from './dto/arg/unlike-post.arg.dto';
+import { PostLikedResponseDto } from './dto/response/post-liked.response.dto';
+import { PostLiked } from 'src/domain/post/event/post-liked';
+import { PostLikedArgDto } from './dto/arg/post-liked.arg.dto';
+import { LikePostArgDto } from './dto/arg/like-post.arg.dto';
 
 @Resolver()
 export class PostResolver {
@@ -19,15 +23,16 @@ export class PostResolver {
     private createPostInteractor: CreatePostInteractor,
     private unlikePostInteractor: UnlikePostInteractor,
     private likePostInteractor: LikePostInteractor,
+    private pubSub: PubSub,
   ) {}
 
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean, { nullable: true })
   async createPost(
-    @Args('req') req: CreatePostDto,
+    @Args('arg') arg: CreatePostArgDto,
     @CurrentUser() jwtPayload: JwtPayload,
   ): Promise<boolean> {
-    const input = CreatePostInteractorInput.parse(jwtPayload.userId, req.text);
+    const input = CreatePostInteractorInput.parse(jwtPayload.userId, arg.text);
     await this.createPostInteractor.execute(input);
     return true;
   }
@@ -35,12 +40,12 @@ export class PostResolver {
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean, { nullable: true })
   async unlikePost(
-    @Args('req') req: UnlikePostDto,
+    @Args('arg') arg: UnlikePostArgDto,
     @CurrentUser() jwtPayload: JwtPayload,
   ): Promise<boolean> {
     const input = UnlikePostInteractorInput.parse(
       jwtPayload.userId,
-      req.postId,
+      arg.postId,
     );
     await this.unlikePostInteractor.execute(input);
     return true;
@@ -49,11 +54,24 @@ export class PostResolver {
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Boolean, { nullable: true })
   async likePost(
-    @Args('req') req: LikePostDto,
+    @Args('arg') arg: LikePostArgDto,
     @CurrentUser() jwtPayload: JwtPayload,
   ): Promise<boolean> {
-    const input = LikePostInteractorInput.parse(jwtPayload.userId, req.postId);
+    const input = LikePostInteractorInput.parse(jwtPayload.userId, arg.postId);
     await this.likePostInteractor.execute(input);
     return true;
+  }
+
+  // @UseGuards(JwtAuthGuard)
+  @Subscription(() => PostLikedResponseDto, {
+    filter: (payload: PostLiked, variables: { arg: PostLikedArgDto }) => {
+      return payload.postLiked.postId === variables.arg.postId;
+    },
+  })
+  postLiked(
+    @Args('arg') arg: PostLikedArgDto,
+    // @CurrentUser() jwtPayload: JwtPayload,
+  ): AsyncIterator<PostLikedResponseDto> {
+    return this.pubSub.asyncIterator(PostLiked.eventName);
   }
 }

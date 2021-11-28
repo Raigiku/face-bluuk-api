@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
-import { UserModule } from './interactor/user/user.module';
-import { PostModule } from './interactor/post/post.module';
+import { UserModule } from './user/user.module';
+import { PostModule } from './post/post.module';
 
 @Global()
 @Module({
