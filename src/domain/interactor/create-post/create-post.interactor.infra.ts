@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePostMainDb } from 'src/infrastructure/persistence/main-db/typeorm/command/create-post.main-db';
-import { DoesUserIdExistMainDb } from 'src/infrastructure/persistence/main-db/typeorm/query/does-userid-exist.main-db';
+import { DoesIdExistMainDb } from 'src/infrastructure/persistence/main-db/typeorm/query/does-id-exist.main-db';
 
 @Injectable()
 export class CreatePostInteractorInfra {
   constructor(
-    private mainDbDoesUserIdExist: DoesUserIdExistMainDb,
+    private mainDbDoesUserIdExist: DoesIdExistMainDb,
     private mainDbInsertPost: CreatePostMainDb,
   ) {}
 
   async isUserInMainDb(userId: string): Promise<boolean> {
-    return await this.mainDbDoesUserIdExist.execute(userId);
+    return await this.mainDbDoesUserIdExist.execute(userId, 'user');
   }
 
   async createPostInMainDb(
