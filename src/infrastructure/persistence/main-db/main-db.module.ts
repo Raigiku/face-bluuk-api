@@ -8,6 +8,7 @@ import { HasUserLikedPostMainDb } from './typeorm/query/has-user-likes-post.main
 import { IsUsernameUniqueMainDb } from './typeorm/query/is-username-unique.main-db';
 import { PostSchema } from './typeorm/schemas/post.schema';
 import { UserSchema } from './typeorm/schemas/user.schema';
+import { UnlikePostMainDb } from './typeorm/command/unlike-post.main-db';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserSchema } from './typeorm/schemas/user.schema';
     RegisterUserMainDb,
     CreatePostMainDb,
     LikePostMainDb,
+    UnlikePostMainDb,
     // queries
     IsUsernameUniqueMainDb,
     DoesIdExistMainDb,
@@ -35,6 +37,7 @@ import { UserSchema } from './typeorm/schemas/user.schema';
     RegisterUserMainDb,
     CreatePostMainDb,
     LikePostMainDb,
+    UnlikePostMainDb,
     // queries
     IsUsernameUniqueMainDb,
     DoesIdExistMainDb,
